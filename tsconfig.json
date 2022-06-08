@@ -21,7 +21,16 @@
     "lib": [
       "es2020",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@services/*": ["src/app/services/*"],
+      "@apikey-interceptor": ["src/app/interceptors/api-key.interceptor.ts"],
+      "@environments/*": ["src/environments/*"],
+      "@consts": ["src/app/consts.ts"],
+      "@interfaces/*": ["src/app/interfaces/*"],
+      "@components/*": ["src/app/components/*"],
+      "@pages/*": ["src/app/pages/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
