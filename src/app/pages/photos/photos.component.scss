@@ -1,0 +1,17 @@
+@use '../../../variables';
+
+.photos-content {
+  background: variables.$main-background;
+  padding: 10px;
+  height: 92vh;
+  overflow: auto;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: space-evenly;
+
+  .photo img {
+    border-radius: 5px;
+  }
+}

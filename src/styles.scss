@@ -1,1 +1,32 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'variables';
+
+body {
+  overflow: hidden;
+  user-select: none;
+  color: variables.$blue;
+  font-family: 'Source Code Pro', monospace;
+}
+
+input, input:focus {
+  font-size: 15px;
+  padding: 3px;
+  border: none;
+  outline: none;
+
+  &::placeholder {
+    color: variables.$light-blue;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: variables.$light-blue;
+  border-radius: 10px;
+}

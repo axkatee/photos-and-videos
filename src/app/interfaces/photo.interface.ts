@@ -19,6 +19,6 @@ export interface Photo {
   alt: string;
 }
 
-export interface PhotoResponse extends CommonResponse {
+export interface PhotosResponse extends CommonResponse {
   photos: Photo[];
 }

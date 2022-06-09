@@ -1,0 +1,73 @@
+@use '../../../variables';
+
+main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0 10px 0;
+  height: 45px;
+  box-sizing: border-box;
+
+  section {
+    display: flex;
+
+
+    .menu-article {
+      .hamburger-menu-placeholder {
+        display: none;
+      }
+
+      .hamburger-menu {
+        font-size: 35px;
+        margin-right: 15px;
+
+        &:hover {
+          opacity: 0.9;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .search-input-article {
+      border: 2px solid variables.$light-blue;
+      margin-right: 15px;
+      height: 23px;
+      align-self: center;
+    }
+
+    .color-picker-section, .color-picker-section section {
+      align-items: center;
+      gap: 3px;
+
+      span {
+        margin-left: 7px;
+      }
+
+      input[type=color] {
+        height: 23px;
+        border: 2px solid variables.$light-blue;
+        padding: 0;
+
+        &:hover {
+          cursor: pointer;
+          opacity: 0.9;
+        }
+
+        &::-webkit-color-swatch-wrapper {
+          padding: 0;
+        }
+      }
+
+      .default-color {
+        width: 19px;
+        height: 19px;
+        border: 2px solid variables.$light-blue;
+
+        &:hover {
+          cursor: pointer;
+          opacity: 0.9;
+        }
+      }
+    }
+  }
+}

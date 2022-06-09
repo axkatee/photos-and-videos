@@ -1,22 +1,26 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {environment} from '@environments/environment';
-import {PhotoUrl} from '@interfaces/photo.interface';
+import {ApiService} from '@services/api.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PhotosService {
-  private readonly baseUrl: string;
+export class PhotosService extends ApiService {
 
-  constructor(
-    private readonly http: HttpClient
-  ) {
-    this.baseUrl = environment.apiUrl;
+  constructor(private readonly _httpClient: HttpClient) {
+    super(_httpClient);
   }
 
-  getPhotos(): Observable<any> {
-    return this.http.get(this.baseUrl + PhotoUrl.curated);
+  getCuratedPhotos(page: number): Observable<any> {
+    return this._getCuratedPhotos(page);
+  }
+
+  searchPhotos(query = '', page: number, color?: string): Observable<any> {
+    return this._searchPhotos(query, page, color);
+  }
+
+  getPhoto(id: number): Observable<any> {
+    return this._getPhoto(id);
   }
 }

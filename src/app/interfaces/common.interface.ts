@@ -34,6 +34,6 @@ export interface CommonResponse {
   page: number;
   per_page: number;
   total_results: number;
-  prev_page?: string;
-  next_page?: string;
+  prev_page?: number;
+  next_page?: number;
 }

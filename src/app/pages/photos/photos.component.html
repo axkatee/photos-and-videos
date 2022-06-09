@@ -1,1 +1,6 @@
-<button (click)="getPhotos()">get photos</button>
+<app-filter></app-filter>
+<section class="photos-content" #photosContentContainer>
+  <article class="photo" *ngFor="let photo of (photos$ | async)">
+    <img [src]="photo.src.medium" [alt]="photo.alt" draggable="false">
+  </article>
+</section>

@@ -7,8 +7,6 @@ export enum CollectionUrl {
   collection = 'v1/collections/'
 }
 
-export type CollectionType = 'photos' | 'videos';
-
 export interface Collection {
   id: string;
   title: string;

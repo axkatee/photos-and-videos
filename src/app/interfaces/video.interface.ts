@@ -1,9 +1,4 @@
-import {
-  CommonResponse,
-  User,
-  VideoFile,
-  VideoPicture
-} from '@interfaces/common.interface';
+import {CommonResponse, User, VideoFile, VideoPicture} from '@interfaces/common.interface';
 
 export enum VideoUrl {
   search = 'videos/search/',
