@@ -1,47 +1,34 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {BehaviorSubject, fromEvent, map} from 'rxjs';
-import {CollectionsService} from '@services/collections.service';
-import {Collection, FeaturedCollectionsResponse,} from '@interfaces/collection.interface';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {HelperService} from '@services/helper.service';
+import {Collection} from '@interfaces/collection.interface';
+import {Pages} from '@interfaces/common.interface';
 
 @Component({
   selector: 'app-collections',
   templateUrl: './collections.component.html',
-  styleUrls: ['./collections.component.scss']
+  styleUrls: ['./collections.component.scss'],
 })
-export class CollectionsComponent implements OnInit, AfterViewInit {
+export class CollectionsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('collectionsContentContainer') collectionsContentContainer: ElementRef | undefined;
   collections$ = new BehaviorSubject<Collection[]>([]);
 
-  private _page = 1;
-
-  constructor(private _collectionsService: CollectionsService) { }
+  constructor(private _helperService: HelperService) { }
 
   ngOnInit(): void {
-    this._setCollections();
+    this._helperService.getEntityOnInit(Pages.collections);
   }
 
   ngAfterViewInit(): void {
-    const contentContainer = this.collectionsContentContainer?.nativeElement;
-    const scroll$ = fromEvent(contentContainer, 'scroll')
-      .pipe(
-        map(() => {
-          return contentContainer.scrollTop
-        })
-      );
+    this._helperService.handleScrollbar(this.collectionsContentContainer, Pages.collections);
+    this._setCollections();
+  }
 
-    scroll$.subscribe((scrollPos) => {
-      let limit = contentContainer.scrollHeight - contentContainer.clientHeight;
-      if (scrollPos === limit) {
-        this._page += 1;
-        this._setCollections();
-      }
-    });
+  ngOnDestroy(): void {
+    this._helperService.clearPage();
   }
 
   private _setCollections(): void {
-    this._collectionsService.getFeaturedCollections(this._page).subscribe((res: FeaturedCollectionsResponse) => {
-      const newCollections = [...this.collections$.getValue(), ...res.collections];
-      this.collections$.next(newCollections);
-    });
+    this.collections$ = this._helperService.collections$;
   }
 }

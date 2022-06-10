@@ -1,4 +1,3 @@
-<app-filter></app-filter>
 <section class="videos-content" #videosContentContainer>
   <article class="video" *ngFor="let video of (videos$ | async)">
     <video [src]="video.video_files[0].link" controls></video>

@@ -1,3 +1,5 @@
+import {Pages} from '@interfaces/common.interface';
+
 export const COLORS = [
   'red',
   'orange',
@@ -11,8 +13,6 @@ export const COLORS = [
   'brown'
 ];
 
-export const PAGES = ['photos', 'videos', 'collections'];
+export const PAGE_WITHOUT_SEARCH = Pages.collections;
 
-export const PAGE_WITHOUT_SEARCH = PAGES[2];
-
-export const PAGE_WITH_ACCESS_SEARCH_BY_COLOR = PAGES[0];
+export const PAGE_WITH_ACCESS_SEARCH_BY_COLOR = Pages.photos;

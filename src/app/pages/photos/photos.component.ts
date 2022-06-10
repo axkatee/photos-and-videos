@@ -1,48 +1,34 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {BehaviorSubject, fromEvent, map} from 'rxjs';
-import {PhotosService} from '@services/photos.service';
-import {Photo, PhotosResponse} from '@interfaces/photo.interface';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {HelperService} from '@services/helper.service';
+import {Photo} from '@interfaces/photo.interface';
+import {Pages} from '@interfaces/common.interface';
 
 @Component({
   selector: 'app-photos',
   templateUrl: './photos.component.html',
   styleUrls: ['./photos.component.scss']
 })
-export class PhotosComponent implements OnInit, AfterViewInit {
+export class PhotosComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('photosContentContainer') photosContentContainer: ElementRef | undefined;
   photos$ = new BehaviorSubject<Photo[]>([]);
 
-  private _page = 1;
-
-  constructor(private _photosService: PhotosService) { }
+  constructor(private _helperService: HelperService) { }
 
   ngOnInit(): void {
-    this._setPhotos();
+    this._helperService.getEntityOnInit(Pages.photos);
   }
 
   ngAfterViewInit(): void {
-    const contentContainer = this.photosContentContainer?.nativeElement;
+    this._helperService.handleScrollbar(this.photosContentContainer, Pages.photos);
+    this._setPhotos();
+  }
 
-    const scroll$ = fromEvent(contentContainer, 'scroll')
-      .pipe(
-        map(() => {
-          return contentContainer.scrollTop
-        })
-      );
-
-    scroll$.subscribe((scrollPos) => {
-      let limit = contentContainer.scrollHeight - contentContainer.clientHeight;
-      if (scrollPos === limit) {
-        this._page += 1;
-        this._setPhotos();
-      }
-    });
+  ngOnDestroy(): void {
+    this._helperService.clearPage();
   }
 
   private _setPhotos(): void {
-    this._photosService.getCuratedPhotos(this._page).subscribe((res: PhotosResponse) => {
-      const newPhotos = [...this.photos$.getValue(), ...res.photos];
-      this.photos$.next(newPhotos);
-    });
+    this.photos$ = this._helperService.photos$;
   }
 }

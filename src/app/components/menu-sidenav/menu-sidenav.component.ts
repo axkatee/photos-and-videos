@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-import {PAGES} from '@consts';
+import {Pages} from '@interfaces/common.interface';
 
 @Component({
   selector: 'app-menu-sidenav',
@@ -8,7 +8,7 @@ import {PAGES} from '@consts';
   styleUrls: ['./menu-sidenav.component.scss']
 })
 export class MenuSidenavComponent {
-  pages = PAGES;
+  pages = [Pages.photos, Pages.videos, Pages.collections];
 
   constructor(
     private _router: Router

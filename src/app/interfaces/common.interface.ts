@@ -37,3 +37,11 @@ export interface CommonResponse {
   prev_page?: number;
   next_page?: number;
 }
+
+export enum Pages {
+  photos = 'photos',
+  videos = 'videos',
+  collections = 'collections'
+}
+
+export type Page = 'photos' | 'videos' | 'collections';

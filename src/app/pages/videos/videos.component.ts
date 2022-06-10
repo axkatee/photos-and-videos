@@ -1,48 +1,34 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {BehaviorSubject, fromEvent, map} from 'rxjs';
-import {VideosService} from '@services/videos.service';
-import {Video, VideosResponse} from '@interfaces/video.interface';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {HelperService} from '@services/helper.service';
+import {Video} from '@interfaces/video.interface';
+import {Pages} from '@interfaces/common.interface';
 
 @Component({
   selector: 'app-videos',
   templateUrl: './videos.component.html',
   styleUrls: ['./videos.component.scss']
 })
-export class VideosComponent implements OnInit, AfterViewInit {
+export class VideosComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('videosContentContainer') videosContentContainer: ElementRef | undefined;
   videos$ = new BehaviorSubject<Video[]>([]);
 
-  private _page = 1;
-
-  constructor(private _videosService: VideosService) { }
+  constructor(private _helperService: HelperService) { }
 
   ngOnInit(): void {
-    this._setVideos();
+    this._helperService.getEntityOnInit(Pages.videos);
   }
 
   ngAfterViewInit(): void {
-    const contentContainer = this.videosContentContainer?.nativeElement;
+    this._helperService.handleScrollbar(this.videosContentContainer, Pages.videos);
+    this._setVideos();
+  }
 
-    const scroll$ = fromEvent(contentContainer, 'scroll')
-      .pipe(
-        map(() => {
-          return contentContainer.scrollTop
-        })
-      );
-
-    scroll$.subscribe((scrollPos) => {
-      let limit = contentContainer.scrollHeight - contentContainer.clientHeight;
-      if (scrollPos === limit) {
-        this._page += 1;
-        this._setVideos();
-      }
-    });
+  ngOnDestroy(): void {
+    this._helperService.clearPage();
   }
 
   private _setVideos(): void {
-    this._videosService.getPopularVideos(this._page).subscribe((res: VideosResponse) => {
-      const newVideos = [...this.videos$.getValue(), ...res.videos];
-      this.videos$.next(newVideos);
-    });
+    this.videos$ = this._helperService.videos$;
   }
 }

@@ -11,6 +11,10 @@ import {VideosComponent} from '@pages/videos/videos.component';
 import {CollectionsComponent} from '@pages/collections/collections.component';
 import {ApiKeyInterceptor} from '@apikey-interceptor';
 
+//subscribe to scroll
+//provide it as DI token
+
+
 @NgModule({
   declarations: [
     AppComponent,
