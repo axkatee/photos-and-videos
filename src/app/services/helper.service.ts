@@ -40,7 +40,7 @@ export class HelperService {
     const scroll$ = fromEvent(contentContainer, 'scroll');
 
     this._scrollSubscription = scroll$.subscribe(() => {
-      let limit = contentContainer.scrollHeight - contentContainer.clientHeight;
+      const limit = contentContainer.scrollHeight - contentContainer.clientHeight;
       if (contentContainer.scrollTop === limit) {
         this._getEntity(page);
       }

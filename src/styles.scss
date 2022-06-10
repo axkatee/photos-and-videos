@@ -1,9 +1,9 @@
-@use 'variables';
+@use 'variables' as *;
 
 body {
   overflow: hidden;
   user-select: none;
-  color: variables.$blue;
+  color: $blue;
   font-family: 'Source Code Pro', monospace;
 }
 
@@ -14,7 +14,7 @@ input, input:focus {
   outline: none;
 
   &::placeholder {
-    color: variables.$light-blue;
+    color: $light-blue;
   }
 }
 
@@ -27,6 +27,6 @@ input, input:focus {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: variables.$light-blue;
+  background-color: $light-blue;
   border-radius: 10px;
 }

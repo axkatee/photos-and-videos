@@ -1,7 +1,7 @@
-@use '../../../variables';
+@use '../../../variables' as *;
 
 .photos-content {
-  background: variables.$main-background;
+  background: $main-background;
   padding: 10px;
   height: 92vh;
   overflow: auto;

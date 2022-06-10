@@ -1,27 +1,24 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {ApiService} from '@services/api.service';
-import {Video, VideosResponse} from '@interfaces/video.interface';
+import {Video, VideosResponse, VideoUrl} from '@interfaces/video.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class VideosService extends ApiService {
+export class VideosService {
 
-  constructor(private readonly _httpClient: HttpClient) {
-    super(_httpClient);
-  }
+  constructor(private readonly _apiService: ApiService) { }
 
   getPopularVideos(page: number): Observable<VideosResponse> {
-    return this._getPopularVideos(page);
+    return this._apiService.get<VideosResponse>(VideoUrl.popular, page);
   }
 
   searchVideos(query: string, page: number): Observable<VideosResponse> {
-    return this._searchVideos(query, page);
+    return this._apiService.get<VideosResponse>(VideoUrl.search, query, page);
   }
 
   getVideo(id: number): Observable<Video> {
-    return this._getVideo(id);
+    return this._apiService.get<Video>(VideoUrl.video, id);
   }
 }

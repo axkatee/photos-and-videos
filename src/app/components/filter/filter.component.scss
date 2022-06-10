@@ -1,6 +1,6 @@
-@use '../../../variables';
+@use '../../../variables' as *;
 
-main {
+.filter-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -29,13 +29,14 @@ main {
     }
 
     .search-input-article {
-      border: 2px solid variables.$light-blue;
+      border: 2px solid $light-blue;
       margin-right: 15px;
       height: 23px;
       align-self: center;
     }
 
-    .color-picker-section, .color-picker-section section {
+    .color-picker-article, .color-picker-article section {
+      display: flex;
       align-items: center;
       gap: 3px;
 
@@ -45,7 +46,7 @@ main {
 
       input[type=color] {
         height: 23px;
-        border: 2px solid variables.$light-blue;
+        border: 2px solid $light-blue;
         padding: 0;
 
         &:hover {
@@ -61,7 +62,7 @@ main {
       .default-color {
         width: 19px;
         height: 19px;
-        border: 2px solid variables.$light-blue;
+        border: 2px solid $light-blue;
 
         &:hover {
           cursor: pointer;

@@ -1,4 +1,4 @@
-@use '../../../variables';
+@use '../../../variables' as *;
 
 .collections-content {
   padding: 10px;
@@ -17,8 +17,8 @@
     padding: 30px;
     display: flex;
     justify-content: space-between;
-    border: 1px solid variables.$light-blue;
-    background: variables.$main-background;
+    border: 1px solid $light-blue;
+    background: $main-background;
 
     article {
       display: flex;

@@ -1,4 +1,4 @@
-<main>
+<div class="filter-container">
   <section>
     <article class="menu-article">
       <input class="hamburger-menu-placeholder" type="checkbox" id="hamburger-menu" [(ngModel)]="isMenuTriggered">
@@ -8,16 +8,18 @@
       🔎
       <input type="text" placeholder="search">
     </article>
-    <section class="color-picker-section" *ngIf="currentPage === pageWithAccessSearchByColor">
+    <article class="color-picker-article" *ngIf="currentPage === pageWithAccessSearchByColor">
       <section>
         <span>search by colors</span>
         <article class="default-color" *ngFor="let color of colors" [style.background]="color"></article>
       </section>
       <span>or choose another</span>
       <input type="color">
-    </section>
+    </article>
   </section>
-  <article class="title">{{currentPage | titlecase}}</article>
-</main>
+  <section>
+    <article class="title">{{currentPage | titlecase}}</article>
+  </section>
+</div>
 
 <app-menu-sidenav *ngIf="isMenuTriggered"></app-menu-sidenav>
