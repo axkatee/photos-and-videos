@@ -1,12 +1,12 @@
 import {ElementRef, Injectable} from '@angular/core';
-import {BehaviorSubject, fromEvent, Subscription} from 'rxjs';
+import {BehaviorSubject, fromEvent, Subject, takeUntil} from 'rxjs';
 import {PhotosService} from '@services/photos.service';
 import {VideosService} from '@services/videos.service';
 import {CollectionsService} from '@services/collections.service';
 import {Photo} from '@interfaces/photo.interface';
 import {Video} from '@interfaces/video.interface';
 import {Collection} from '@interfaces/collection.interface';
-import {Page, Pages} from '@interfaces/common.interface';
+import {ExcludedFromMenuPages, Page, Pages} from '@interfaces/common.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,10 @@ export class HelperService {
   private _collectionsPage = 1;
   private _collectionInnerPage = 1;
 
-  private _scrollSubscription: Subscription | undefined;
+  private _searchString: string | undefined;
+  private _colorString: string | undefined;
+
+  private destroy$ = new Subject<boolean>();
 
   constructor(
     private _photosService: PhotosService,
@@ -30,29 +33,76 @@ export class HelperService {
     private _collectionsService: CollectionsService
   ) { }
 
-  getEntityOnInit(page: Page): void {
+  getEntityOnInit(page: Page | ExcludedFromMenuPages): void {
     this._getEntity(page);
   }
 
-  handleScrollbar(contentContainerEl: ElementRef | undefined, page: Page): void {
-    const contentContainer = contentContainerEl?.nativeElement;
-
-    const scroll$ = fromEvent(contentContainer, 'scroll');
-
-    this._scrollSubscription = scroll$.subscribe(() => {
-      const limit = contentContainer.scrollHeight - contentContainer.clientHeight;
-      if (contentContainer.scrollTop === limit) {
-        this._getEntity(page);
-      }
+  searchPhotos(value: string): void {
+    this._searchString = value;
+    if (!value) return this._getEntity(Pages.photos);
+    this._photosService.searchPhotos(value, this._photosPage++).subscribe(res => {
+     this.photos$.next([...this.photos$.getValue(), ...res.photos]);
     });
   }
 
-  clearPage(): void {
-    this._scrollSubscription?.unsubscribe();
-    this._clearPageInfo();
+  searchPhotosByColor(color: string): void {
+    if (!this._searchString) return;
+    this.clearPagesInfo(false);
+    this._colorString = color;
+    this._photosService.searchPhotos(this._searchString, this._photosPage++, color).subscribe(res => {
+      this.photos$.next([...this.photos$.getValue(), ...res.photos]);
+    });
   }
 
-  private _getEntity(page: Page): void {
+  searchVideos(value: string): void {
+    this._searchString = value;
+    if (!value) return this._getEntity(Pages.videos);
+    this._videosService.searchVideos(value, this._videosPage++).subscribe(res => {
+     this.videos$.next([...this.videos$.getValue(), ...res.videos]);
+    })
+  }
+
+  handleScrollbar(contentContainerEl: ElementRef | undefined, page: Page | ExcludedFromMenuPages): void {
+    const contentContainer = contentContainerEl?.nativeElement;
+
+    fromEvent(contentContainer, 'scroll')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        const limit = contentContainer.scrollHeight - contentContainer.clientHeight;
+        if (contentContainer.scrollTop === limit) {
+          if (this._searchString) {
+            if (page === Pages.photos) {
+              this._colorString
+                ? this.searchPhotosByColor(this._colorString)
+                : this.searchPhotos(this._searchString);
+            }
+            if (page === Pages.videos) return this.searchVideos(this._searchString);
+          }
+          else this._getEntity(page);
+        }
+      });
+  }
+
+  clearPageOnDestroy(): void {
+    this.clearPagesInfo();
+    this.destroy$.next(true);
+    this.destroy$.complete();
+  }
+
+  clearPagesInfo(clearSearchString = true): void {
+    if (clearSearchString) this._searchString = undefined;
+    this._colorString = undefined;
+    this._photosPage = 1;
+    this._videosPage = 1;
+    this._collectionsPage = 1;
+    this._collectionInnerPage = 1;
+    this.photos$.next([]);
+    this.videos$.next([]);
+    this.collections$.next([]);
+    this.collectionInner$.next([]);
+  }
+
+  private _getEntity(page: Page, id?: string): void {
     switch (page) {
       case Pages.photos:
         this._photosService.getCuratedPhotos(this._photosPage++).subscribe(res => {
@@ -69,19 +119,13 @@ export class HelperService {
           this.collections$.next([...this.collections$.getValue(), ...res.collections]);
         });
         break;
+      case ExcludedFromMenuPages.collectionInner:
+        this._collectionsService.getCollection(id!, this._collectionInnerPage++).subscribe(res => {
+          this.collectionInner$.next([...this.collectionInner$.getValue(), ...res.media]);
+        });
+        break;
       default: return;
     }
-  }
-
-  private _clearPageInfo(): void {
-    this._photosPage = 1;
-    this._videosPage = 1;
-    this._collectionsPage = 1;
-    this._collectionInnerPage = 1;
-    this.photos$.next([]);
-    this.videos$.next([]);
-    this.collections$.next([]);
-    this.collectionInner$.next([]);
   }
 
 }

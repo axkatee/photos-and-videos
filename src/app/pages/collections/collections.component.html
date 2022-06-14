@@ -1,5 +1,5 @@
 <section class="collections-content" #collectionsContentContainer>
-  <section class="collection" *ngFor="let collection of (collections$ | async)">
+  <section class="collection" *ngFor="let collection of (collections$ | async)" (click)="openCollection(collection.id)">
     <article>
       <span class="title">{{collection.title}}</span>
       <span class="description">{{collection.description}}</span>

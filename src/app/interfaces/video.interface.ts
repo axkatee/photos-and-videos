@@ -7,7 +7,7 @@ export enum VideoUrl {
 }
 
 export interface Video {
-  id: number;
+  id: string;
   width: number;
   height: number;
   url: string;

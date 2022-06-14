@@ -25,7 +25,7 @@ export class PhotosComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._helperService.clearPage();
+    this._helperService.clearPageOnDestroy();
   }
 
   private _setPhotos(): void {

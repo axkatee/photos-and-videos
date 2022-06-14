@@ -1,5 +1,5 @@
 export interface User {
-  id: number;
+  id: string;
   name: string;
   url: string;
 }
@@ -16,7 +16,7 @@ export interface Src {
 }
 
 export interface VideoFile {
-  id: number;
+  id: string;
   quality: 'hd' | 'sd';
   file_type: string;
   width: number;
@@ -25,7 +25,7 @@ export interface VideoFile {
 }
 
 export interface VideoPicture {
-  id: number;
+  id: string;
   picture: string;
   nr: number;
 }
@@ -44,4 +44,8 @@ export enum Pages {
   collections = 'collections'
 }
 
-export type Page = 'photos' | 'videos' | 'collections';
+export enum ExcludedFromMenuPages {
+  collectionInner = 'collectionInner'
+}
+
+export type Page = 'photos' | 'videos' | 'collections' | 'collectionInner';

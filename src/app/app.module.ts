@@ -9,11 +9,8 @@ import {FilterComponent} from '@components/filter/filter.component';
 import {PhotosComponent} from '@pages/photos/photos.component';
 import {VideosComponent} from '@pages/videos/videos.component';
 import {CollectionsComponent} from '@pages/collections/collections.component';
+import { CollectionInnerComponent } from '@pages/collection-inner/collection-inner.component';
 import {ApiKeyInterceptor} from '@apikey-interceptor';
-
-//subscribe to scroll
-//provide it as DI token
-
 
 @NgModule({
   declarations: [
@@ -22,7 +19,8 @@ import {ApiKeyInterceptor} from '@apikey-interceptor';
     FilterComponent,
     PhotosComponent,
     VideosComponent,
-    CollectionsComponent
+    CollectionsComponent,
+    CollectionInnerComponent
   ],
   imports: [
     BrowserModule,

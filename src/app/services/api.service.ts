@@ -13,11 +13,11 @@ export class ApiService {
     this._baseUrl = environment.apiUrl;
   }
 
-  get<T>(path: string, ...params: any): Observable<T> {
-    return this._http.get<T>(this._buildUrl({...params}, path));
+  get<T>(path: string, params: any): Observable<T> {
+    return this._http.get<T>(this._buildUrl(path, params));
   }
 
-  private _buildUrl(params: any, path: string): string {
+  private _buildUrl(path: string, params: any): string {
     let url = this._baseUrl + path + '?';
 
     Object.keys(params).forEach(key => {

@@ -1,0 +1,6 @@
+<section class="collection-content" #collectionContentContainer>
+  <article class="video" *ngFor="let item of $any((collectionInner$ | async))">
+    <img *ngIf="'src' in item" [src]="item.src.medium" [alt]="item.alt" draggable="false">
+    <video *ngIf="'video_files' in item" [src]="item.video_files[0].link" controls></video>
+  </article>
+</section>

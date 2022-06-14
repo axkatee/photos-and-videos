@@ -7,13 +7,13 @@ export enum PhotoUrl {
 }
 
 export interface Photo {
-  id: number;
+  id: string;
   width: number;
   height: number;
   url: string;
   photographer: string;
   photographer_url: string;
-  photographer_id: number;
+  photographer_id: string;
   avg_color: string;
   src: Src;
   alt: string;

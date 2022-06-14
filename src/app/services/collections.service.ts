@@ -11,10 +11,10 @@ export class CollectionsService {
   constructor(private readonly _apiService: ApiService) { }
 
   getFeaturedCollections(page: number): Observable<FeaturedCollectionsResponse> {
-    return this._apiService.get<FeaturedCollectionsResponse>(CollectionUrl.featured, page);
+    return this._apiService.get<FeaturedCollectionsResponse>(CollectionUrl.featured, {page});
   }
 
-  getCollection(id: number, page: number): Observable<CollectionResponse> {
-    return this._apiService.get<CollectionResponse>(CollectionUrl.collection, id, page);
+  getCollection(id: string, page: number): Observable<CollectionResponse> {
+    return this._apiService.get<CollectionResponse>(CollectionUrl.collection, {id, page});
   }
 }

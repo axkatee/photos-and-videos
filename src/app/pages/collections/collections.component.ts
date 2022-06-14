@@ -1,4 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Router} from '@angular/router';
 import {BehaviorSubject} from 'rxjs';
 import {HelperService} from '@services/helper.service';
 import {Collection} from '@interfaces/collection.interface';
@@ -13,7 +14,10 @@ export class CollectionsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('collectionsContentContainer') collectionsContentContainer: ElementRef | undefined;
   collections$ = new BehaviorSubject<Collection[]>([]);
 
-  constructor(private _helperService: HelperService) { }
+  constructor(
+    private _router: Router,
+    private _helperService: HelperService
+  ) { }
 
   ngOnInit(): void {
     this._helperService.getEntityOnInit(Pages.collections);
@@ -25,7 +29,11 @@ export class CollectionsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._helperService.clearPage();
+    this._helperService.clearPageOnDestroy();
+  }
+
+  openCollection(id: string): void {
+    this._router.navigate([Pages.collections + '/' + id]);
   }
 
   private _setCollections(): void {
